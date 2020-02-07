@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name":"Birthday.py",
+      "script":"index.py",
+      "interpreter" : "python3.7",
+      "interpreter_args": "-u"
+    }
+  ]
+}

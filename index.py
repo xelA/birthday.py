@@ -102,6 +102,14 @@ class BirthdayBot(Cog):
         age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
         return age
 
+    def ifelse(self, statement, if_statement: str, else_statement: str = None):
+        """ Make it easier with if/else cases of what grammar to use
+        - if_statement is returned when statement is True
+        - else_statement is returned when statement is False/None
+        """
+        else_statement = else_statement if else_statement else ""
+        return if_statement if statement else else_statement
+
     @commands.command()
     async def ping(self, ctx):
         """ Pong! """
@@ -123,16 +131,25 @@ class BirthdayBot(Cog):
     async def birthday(self, ctx, *, user: discord.Member = None):
         """ Check your birthday or other people """
         user = user or ctx.author
+
+        if user.id == self.bot.user.id:
+            return await ctx.send(f"I have birthday **06 February**, thank you for asking ❤")
+
         has_birthday = self.check_birthday_noted(user.id)
         if not has_birthday:
             return await ctx.send(f"**{user.name}** has not saved his/her birthday :(")
 
         birthday = has_birthday.strftime('%d %B')
         age = self.calculate_age(has_birthday)
-        target = "**You** have" if user == ctx.author else f"**{user.name}** has"
-        grammar = "are" if user == ctx.author else "is"
 
-        await ctx.send(f"{target} birthday on **{birthday}** and {grammar} currently **{age}** years old.")
+        is_author = user == ctx.author
+        target = self.ifelse(is_author, "**You** have", f"**{user.name}** has")
+        grammar = self.ifelse(is_author, "are", "is")
+        when = self.ifelse(is_author, " ", " on ")
+
+        await ctx.send(
+            f"{target} birthday{when}**{birthday}** and {grammar} currently **{age}** years old."
+        )
 
     @commands.command()
     async def set(self, ctx):

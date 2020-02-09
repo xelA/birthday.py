@@ -50,7 +50,7 @@ class BirthdayBot(Cog):
     async def on_ready(self):
         print(f'Ready: {self.bot.user} | Servers: {len(self.bot.guilds)}')
         await self.bot.change_presence(
-            activity=discord.Activity(type=3, name="when your birthday is due 🎉🎂"),
+            activity=discord.Activity(type=3, name="when your birthday is due 🎉🎂 (Prefix: b!)"),
             status=discord.Status.idle
         )
 
@@ -70,7 +70,7 @@ class BirthdayBot(Cog):
                         user = guild.get_member(g["user_id"])
                         await user.add_roles(birthday_role, reason=f"{user} has birthday! 🎂🎉")
                         await self.bot.get_channel(config.announce_channel_id).send(
-                            f"Happy birthday {user.mention}, have a nice birthday and enjoy your role today 🎂🎉 (Prefix: b!)"
+                            f"Happy birthday {user.mention}, have a nice birthday and enjoy your role today 🎂🎉"
                         )
                         print(f"Gave role to {user.name}")
                     except Exception:
@@ -97,7 +97,7 @@ class BirthdayBot(Cog):
             return None
 
     def calculate_age(self, born):
-        """ Calcluate age (datetime) """
+        """ Calculate age (datetime) """
         today = datetime.datetime.now()
         age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
         return age

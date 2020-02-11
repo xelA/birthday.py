@@ -192,7 +192,7 @@ class BirthdayBot(Cog):
             return await ctx.send(f"Nope.. you can't exist in the future **{ctx.author.name}**")
         if age > 122:
             return await ctx.send(f"The world record for oldest human is **122**, doubtful you're that old **{ctx.author.name}**...")
-        if age <= 13:
+        if age <= 12:
             return await ctx.send(f"You have to be **13** to use Discord **{ctx.author.name}**, are you saying you're underage? 🤔")
 
         confirm_msg = await ctx.send(

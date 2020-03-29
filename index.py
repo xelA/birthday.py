@@ -37,6 +37,9 @@ class BirthdayBot(Cog):
             error = default.traceback_maker(err.original)
             await ctx.send(f"There was an error processing the command ;-;\n{error}")
 
+        elif isinstance(err, errors.MaxConcurrencyReached):
+            await ctx.send(f"You've reached max capacity of command usage at once, please finish the previous one...")
+
         elif isinstance(err, errors.CheckFailure):
             pass
 
@@ -152,6 +155,7 @@ class BirthdayBot(Cog):
         )
 
     @commands.command()
+    @commands.max_concurrency(1, per=commands.BucketType.user)
     async def set(self, ctx):
         """ Set your birthday :) """
         has_birthday = self.check_birthday_noted(ctx.author.id)
@@ -228,6 +232,12 @@ class BirthdayBot(Cog):
     @commands.check(default.is_owner)
     async def dropall(self, ctx):
         data = self.db.execute("DELETE FROM birthdays")
+        await ctx.send(f"DEBUG: {data}")
+
+    @commands.command()
+    @commands.check(default.is_owner)
+    async def dropuser(self, ctx, *, user: discord.Member):
+        data = self.db.execute("DELETE FROM birthdays WHERE user_id=?", (user.id,))
         await ctx.send(f"DEBUG: {data}")
 
 

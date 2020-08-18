@@ -38,7 +38,7 @@ class BirthdayBot(Cog):
             await ctx.send(f"There was an error processing the command ;-;\n{error}")
 
         elif isinstance(err, errors.MaxConcurrencyReached):
-            await ctx.send(f"You've reached max capacity of command usage at once, please finish the previous one...")
+            await ctx.send("You've reached max capacity of command usage at once, please finish the previous one...")
 
         elif isinstance(err, errors.CheckFailure):
             pass
@@ -101,7 +101,7 @@ class BirthdayBot(Cog):
 
     def calculate_age(self, born):
         """ Calculate age (datetime) """
-        today = datetime.datetime.now()
+        today = datetime.datetime.utcnow()
         age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
         return age
 
@@ -123,6 +123,12 @@ class BirthdayBot(Cog):
         await message.edit(content=f"🏓 WS: {before_ws}ms  |  REST: {ping}ms")
 
     @commands.command()
+    async def time(self, ctx):
+        """ Check what the time is for me (the bot) """
+        time = datetime.datetime.utcnow().strftime("%d %B %Y, %H:%M")
+        await ctx.send(f"Currently the time for me is **{time}**")
+
+    @commands.command()
     async def source(self, ctx):
         """ Check out my source code <3 """
         # Do not remove this command, this has to stay due to the GitHub LICENSE.
@@ -136,7 +142,7 @@ class BirthdayBot(Cog):
         user = user or ctx.author
 
         if user.id == self.bot.user.id:
-            return await ctx.send(f"I have birthday **06 February**, thank you for asking ❤")
+            return await ctx.send("I have birthday **06 February**, thank you for asking ❤")
 
         has_birthday = self.check_birthday_noted(user.id)
         if not has_birthday:
@@ -147,7 +153,7 @@ class BirthdayBot(Cog):
 
         is_author = user == ctx.author
         target = self.ifelse(is_author, "**You** have", f"**{user.name}** has")
-        grammar = self.ifelse(is_author, "are", "is")
+        grammar = self.ifelse(is_author, "you're", "is")
         when = self.ifelse(is_author, " ", " on ")
 
         await ctx.send(

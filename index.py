@@ -17,7 +17,10 @@ if not tables:
 
 # Local variables for index.py
 config = default.get("config.json")
-bot = commands.Bot(command_prefix=config.prefix, prefix=config.prefix, command_attrs=dict(hidden=True))
+bot = commands.Bot(
+    command_prefix=config.prefix, prefix=config.prefix, command_attrs=dict(hidden=True),
+    intents=discord.Intents(guilds=True, messages=True)
+)
 
 
 class BirthdayBot(Cog):

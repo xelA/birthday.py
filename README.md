@@ -1,3 +1,5 @@
+## This was merged into xelA, only kept as public reference
+
 <p align="center">
   <img alt="birthday.py" src="https://i.alexflipnote.dev/Q6fdPJa.png" width="750px">
 </p>
